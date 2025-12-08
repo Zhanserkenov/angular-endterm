@@ -1,0 +1,43 @@
+<div class="profile-container">
+  <div class="profile-content">
+    <h1>Profile</h1>
+    <div *ngIf="currentUser$ | async as user; else loading" class="user-info">
+      <div class="avatar-section">
+        <div class="avatar-preview" *ngIf="profile.photoData; else noAvatar">
+          <img [src]="profile.photoData" alt="Profile photo" />
+        </div>
+        <ng-template #noAvatar>
+          <div class="avatar-placeholder">No photo</div>
+        </ng-template>
+        <label class="upload-btn">
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+          <span *ngIf="!uploading">Upload photo</span>
+          <span *ngIf="uploading">Uploading...</span>
+        </label>
+        <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
+      </div>
+
+      <div class="info-item">
+        <label>Email:</label>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="info-item">
+        <label>User ID:</label>
+        <span>{{ user.uid }}</span>
+      </div>
+      <div class="info-item">
+        <label>Email Verified:</label>
+        <span>{{ user.emailVerified ? 'Yes' : 'No' }}</span>
+      </div>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </div>
+    <ng-template #loading>
+      <div class="loading">
+        <p>Loading user information...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+

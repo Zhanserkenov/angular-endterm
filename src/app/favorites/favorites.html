@@ -1,0 +1,27 @@
+<div class="favorites-container">
+  <div class="favorites-content">
+    <h1>Favorites</h1>
+    <p class="favorites-description">
+      All items you have added to your favorites are listed here.
+    </p>
+
+    <div *ngIf="mergeInfo$ | async" class="favorites-merge-info">
+      Local favorites have been merged with your account favorites on first login.
+    </div>
+
+    <ng-container *ngIf="favoriteItems$ | async as items">
+      <div *ngIf="items.length === 0" class="favorites-empty">
+        You don't have any favorite items yet. Click the ☆ icon on an item to add it to favorites.
+      </div>
+
+      <div *ngIf="items.length > 0" class="favorites-grid">
+        <app-item-card
+          *ngFor="let item of items"
+          [item]="item">
+        </app-item-card>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+

@@ -1,0 +1,22 @@
+<div class="item-card" [routerLink]="['/items', item.id]" role="link" tabindex="0">
+  <div class="card-image">
+    <img [src]="item.thumbnail" [alt]="item.title" loading="lazy" />
+    <button
+      type="button"
+      class="favorite-button"
+      (click)="toggleFavorite($event)"
+      aria-label="Toggle favorite"
+    >
+      <span *ngIf="isFavorite$ | async; else notFav">★</span>
+      <ng-template #notFav>☆</ng-template>
+    </button>
+  </div>
+  <div class="card-content">
+    <h3 class="card-title">{{ item.title }}</h3>
+    <p class="card-description">{{ item.description | slice:0:100 }}...</p>
+    <div class="card-footer">
+      <span class="card-price">${{ item.price }}</span>
+      <span class="card-rating" aria-label="rating">⭐ {{ item.rating }}</span>
+    </div>
+  </div>
+</div>

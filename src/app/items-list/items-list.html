@@ -1,0 +1,68 @@
+<div class="items-list-container">
+
+  <div class="search-section">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearchChange()"
+      placeholder="🔍 Search items..."
+      class="search-input"
+    />
+  </div>
+
+  @if (loading$ | async) {
+    <div class="loading">Loading items...</div>
+  }
+
+  @if (error$ | async; as err) {
+    <div class="error">{{ err }}</div>
+  }
+
+  @if (!(loading$ | async) && !(error$ | async)) {
+    @if ((items$ | async)?.length === 0) {
+      <div class="no-items">No items found. Try a different search term.</div>
+    }
+    @else {
+      <div class="items-grid">
+        @for (item of (items$ | async); track item.id) {
+          <app-item-card [item]="item"></app-item-card>
+        }
+      </div>
+
+      <div class="pagination" *ngIf="total$ | async as total">
+        <div class="page-size-select">
+          <label>
+            Items per page:
+            <select [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div class="page-controls">
+          <button
+            type="button"
+            class="page-button"
+            (click)="onPageChange(page - 1)"
+            [disabled]="page <= 1"
+          >
+            Previous
+          </button>
+          <span class="page-info">
+            Page {{ page }} of {{ getTotalPages(total) }}
+          </span>
+          <button
+            type="button"
+            class="page-button"
+            (click)="onPageChange(page + 1)"
+            [disabled]="page >= getTotalPages(total)"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>
