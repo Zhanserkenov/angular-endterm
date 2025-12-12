@@ -10,6 +10,12 @@
   z-index: 1000;
 }
 
+.offline-link {
+  margin-left: 12px;
+  color: #fff;
+  text-decoration: underline;
+}
 
-
-
+.offline-link:hover {
+  color: #fef3c7;
+}

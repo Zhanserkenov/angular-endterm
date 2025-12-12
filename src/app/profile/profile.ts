@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '@angular/fire/auth';
-import { Observable, Subject, takeUntil, firstValueFrom } from 'rxjs';
+import { Observable, Subject, takeUntil, firstValueFrom, take } from 'rxjs';
 import { ProfileService, UserProfile } from '../services/profile.service';
+import { PushNotificationService } from '../services/push-notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,15 +20,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
   uploading = false;
   errorMsg = '';
 
+  // Push notifications
+  isPushSubscribed$: Observable<boolean>;
+  isPushSupported = false;
+  pushSubscribing = false;
+  pushError = '';
+  pushSuccess = '';
+
   private destroy$ = new Subject<void>();
   private worker?: Worker;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private pushNotificationService: PushNotificationService
   ) {
     this.currentUser$ = this.authService.currentUser$;
+    this.isPushSubscribed$ = this.pushNotificationService.isSubscribed();
+    this.isPushSupported = this.pushNotificationService.isSupported();
   }
 
   ngOnInit() {
@@ -92,7 +103,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       const compressedDataUrl = await this.compressImage(file);
       await this.profileService.upsertProfile(user.uid, { photoData: compressedDataUrl });
-      this.profile.photoData = compressedDataUrl;
+
+      // Reload profile to get updated data
+      this.profileService
+        .getProfile(user.uid)
+        .pipe(take(1))
+        .subscribe((updatedProfile) => {
+          this.profile = updatedProfile || {};
+        });
+
       this.errorMsg = '';
     } catch (err: any) {
       this.errorMsg = err?.message || 'Failed to upload photo';
@@ -131,5 +150,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
         reject(new Error('Web Workers are not supported in this browser'));
       }
     });
+  }
+
+  async subscribeToPush() {
+    this.pushSubscribing = true;
+    this.pushError = '';
+    this.pushSuccess = '';
+
+    try {
+      await this.pushNotificationService.subscribeToPush();
+      this.pushSuccess = 'Successfully subscribed to push notifications!';
+      setTimeout(() => this.pushSuccess = '', 5000);
+    } catch (error: any) {
+      this.pushError = error.message || 'Failed to subscribe to notifications';
+      setTimeout(() => this.pushError = '', 5000);
+    } finally {
+      this.pushSubscribing = false;
+    }
   }
 }

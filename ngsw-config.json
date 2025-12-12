@@ -15,17 +15,6 @@
           "/*.js"
         ]
       }
-    },
-    {
-      "name": "assets",
-      "installMode": "lazy",
-      "updateMode": "prefetch",
-      "resources": {
-        "files": [
-          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)",
-          "/assets/**"
-        ]
-      }
     }
   ],
 
@@ -48,7 +37,6 @@
   "navigationUrls": [
     "/**",
     "!/api/**",
-    "!/assets/**",
-    "!/**/*.(js|css|png|jpg|jpeg|svg|webp)"
+    "!/**/*.(js|css)"
   ]
 }

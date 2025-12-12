@@ -1,7 +1,4 @@
 <div class="offline-banner" *ngIf="(online$ | async) === false">
   <span>You are offline. Some features may be unavailable.</span>
+  <a routerLink="/offline" class="offline-link">Open offline page</a>
 </div>
-
-
-
-

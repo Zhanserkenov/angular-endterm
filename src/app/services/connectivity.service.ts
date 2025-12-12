@@ -1,23 +1,40 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent, merge, Observable, startWith } from 'rxjs';
+import { BehaviorSubject, fromEvent, merge, Observable, of, from } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ConnectivityService {
-  private onlineSubject = new BehaviorSubject<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  private onlineSubject = new BehaviorSubject<boolean>(true);
   online$: Observable<boolean> = this.onlineSubject.asObservable();
 
   constructor() {
-    const online$ = fromEvent(window, 'online').pipe(startWith(null));
-    const offline$ = fromEvent(window, 'offline').pipe(startWith(null));
+    const onlineEvent$ = fromEvent(window, 'online').pipe(map(() => true));
+    const offlineEvent$ = fromEvent(window, 'offline').pipe(map(() => false));
 
-    merge(online$, offline$).subscribe(() => {
-      this.onlineSubject.next(navigator.onLine);
-    });
+    const checkOnline = (): Observable<boolean> => {
+      if (!navigator.onLine) return of(false);
+
+      const timestamp = Date.now();
+      return from(
+        fetch(`https://httpbin.org/status/200?t=${timestamp}`, {
+          method: 'GET',
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        })
+          .then(res => res.ok)
+          .catch(() => false)
+      ).pipe(catchError(() => of(false)));
+    };
+
+    merge(
+      of(navigator.onLine),
+      onlineEvent$,
+      offlineEvent$
+    ).pipe(
+      switchMap(() => checkOnline())
+    ).subscribe(isOnline => this.onlineSubject.next(isOnline));
   }
 }
-
-
-
-

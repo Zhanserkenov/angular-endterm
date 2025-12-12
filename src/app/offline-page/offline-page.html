@@ -1,0 +1,23 @@
+<section class="offline-wrapper">
+  <div class="offline-card">
+    <h1>Offline Mode</h1>
+    <p>You are offline. Cached pages and previously loaded products remain available.</p>
+
+    <div class="status">
+      <span class="dot" [class.online]="(online$ | async) === true"></span>
+      <span>{{ (online$ | async) ? 'Back online' : 'No connection' }}</span>
+    </div>
+
+    <ul>
+      <li>Reconnect to refresh products.</li>
+      <li>Favorites and cached pages still accessible.</li>
+      <li>Reload when online to sync data.</li>
+    </ul>
+
+    <div class="actions">
+      <button class="primary" (click)="retry()">Retry</button>
+      <a routerLink="/">Go to Home</a>
+    </div>
+  </div>
+</section>
+

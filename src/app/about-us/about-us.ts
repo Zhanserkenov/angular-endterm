@@ -11,27 +11,47 @@ import { CommonModule } from '@angular/common';
 })
 export class AboutUsComponent {
   title = 'About Our Team';
-  mission = 'We build delightful software';
+  mission = 'We are a passionate team of developers and designers dedicated to creating exceptional online shopping experiences. Our mission is to bring you the best products from around the web, curated with care and attention to detail.';
 
-  photoUrl = 'https://kartinki.pibig.info/uploads/posts/2023-04/1681968142_kartinki-pibig-info-p-biznes-komanda-kartinki-arti-vkontakte-1.png';
-  isButtonDisabled = false;
+  photoUrl = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop';
 
-  likes = 0;
-  showMessage = false;
+  teamMembers = [
+    {
+      name: 'Alex Johnson',
+      role: 'Lead Developer',
+      bio: 'Full-stack developer with 8+ years of experience building scalable web applications.',
+      icon: '💻'
+    },
+    {
+      name: 'Sarah Chen',
+      role: 'UI/UX Designer',
+      bio: 'Creative designer passionate about creating intuitive and beautiful user interfaces.',
+      icon: '🎨'
+    },
+    {
+      name: 'Mike Rodriguez',
+      role: 'Product Manager',
+      bio: 'Focused on delivering value to customers through data-driven product decisions.',
+      icon: '📊'
+    },
+    {
+      name: 'Emma Wilson',
+      role: 'Quality Assurance',
+      bio: 'Ensuring our platform works flawlessly across all devices and browsers.',
+      icon: '🔍'
+    }
+  ];
 
-  name = '';
+  liked = false;
+
   email = '';
   subscribed = false;
 
-  addLike() {
-    this.likes++;
+  toggleLike(): void {
+    this.liked = true;
   }
 
-  toggleMessage() {
-    this.showMessage = !this.showMessage;
-  }
-
-  subscribe() {
+  subscribe(): void {
     if (this.email) {
       this.subscribed = true;
     }

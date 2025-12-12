@@ -1,21 +1,64 @@
 <nav class="navbar">
-  <a routerLink="/" class="nav-logo">My App</a>
   <div class="nav-container">
+    <a routerLink="/" class="nav-logo">
+      <span class="logo-icon">🛍️</span>
+      <span class="logo-text">Online Store</span>
+    </a>
+
     <ul class="nav-menu">
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-      <li><a routerLink="/items" routerLinkActive="active">Items</a></li>
-      <li><a routerLink="/favorites" routerLinkActive="active">Favorites</a></li>
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-text">Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/items" routerLinkActive="active">
+          <span class="nav-icon">📦</span>
+          <span class="nav-text">Products</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/favorites" routerLinkActive="active">
+          <span class="nav-icon">❤️</span>
+          <span class="nav-text">Favorites</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">About</span>
+        </a>
+      </li>
+
       <ng-container *ngIf="currentUser$ | async as user; else notLoggedIn">
-        <li class="avatar-item" *ngIf="avatarUrl">
-          <img [src]="avatarUrl" alt="Profile" class="nav-avatar" />
+        <li class="user-menu">
+          <a routerLink="/profile" routerLinkActive="active" class="profile-link">
+            <span class="nav-icon">👤</span>
+            <span class="nav-text">Profile</span>
+          </a>
         </li>
-        <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
-        <li><a (click)="logout($event)" class="logout-link">Logout</a></li>
+        <li>
+          <a (click)="logout($event)" class="logout-link">
+            <span class="nav-icon">🚪</span>
+            <span class="nav-text">Logout</span>
+          </a>
+        </li>
       </ng-container>
+
       <ng-template #notLoggedIn>
-        <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
-        <li><a routerLink="/signup" routerLinkActive="active">Signup</a></li>
+        <li>
+          <a routerLink="/login" routerLinkActive="active">
+            <span class="nav-icon">🔐</span>
+            <span class="nav-text">Login</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/signup" routerLinkActive="active" class="signup-link">
+            <span class="nav-icon">✨</span>
+            <span class="nav-text">Signup</span>
+          </a>
+        </li>
       </ng-template>
     </ul>
   </div>

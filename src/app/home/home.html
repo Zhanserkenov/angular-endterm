@@ -1,16 +1,60 @@
-<div class="home-container">
-  <div class="hero-section">
-    <h1>Welcome to Our Store!</h1>
-    <p class="subtitle">Discover amazing products at great prices</p>
-    <img src="https://pngimg.com/d/welcome_PNG25.png" alt="Welcome" class="hero-image" />
+<div class="home-container page-container">
+  <div class="hero glass">
+    <div class="hero-copy">
+      <p class="eyebrow">Your trusted shopping destination</p>
+      <h1>{{ title }}</h1>
+      <p class="subtitle">{{ subtitle }}</p>
+      <div class="links-section">
+        <a routerLink="/items" class="cta-button">Start Shopping</a>
+        <a routerLink="/favorites" class="cta-button ghost">View Favorites</a>
+      </div>
+      <ul class="hero-bullets">
+        <li>Wide selection of quality products</li>
+        <li>Secure and fast checkout process</li>
+        <li>24/7 customer support available</li>
+      </ul>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-image">
+        <img [src]="heroImage" alt="Modern shopping experience" />
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-label">Best Seller</span>
+        <strong>Electronics</strong>
+        <p>Top-rated gadgets and devices.</p>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-label">New Arrivals</span>
+        <strong>Daily Essentials</strong>
+        <p>Fresh products added weekly.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="content-section">
-    <p>Browse through our extensive collection of quality products. Find exactly what you're looking for with our easy search functionality.</p>
-
-    <div class="links-section">
-      <a routerLink="/items" class="cta-button">Browse Items</a>
-      <a routerLink="/about" class="cta-button secondary">Learn More</a>
+  <div class="featured-products-section">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <p>Handpicked selections just for you</p>
+    </div>
+    <div class="products-carousel">
+      <div class="carousel-track">
+        <ng-container *ngIf="featuredItems$ | async as items">
+          <app-item-card 
+            *ngFor="let item of items" 
+            [item]="item"
+            class="carousel-item"
+          ></app-item-card>
+          <!-- Duplicate items for seamless loop -->
+          <app-item-card 
+            *ngFor="let item of items" 
+            [item]="item"
+            class="carousel-item"
+          ></app-item-card>
+        </ng-container>
+      </div>
+    </div>
+    <div class="carousel-actions">
+      <a routerLink="/items" class="cta-button">View All Products</a>
     </div>
   </div>
 </div>

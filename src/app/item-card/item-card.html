@@ -1,6 +1,10 @@
-<div class="item-card" [routerLink]="['/items', item.id]" role="link" tabindex="0">
+<div class="item-card glass" [routerLink]="['/items', item.id]" role="link" tabindex="0">
   <div class="card-image">
     <img [src]="item.thumbnail" [alt]="item.title" loading="lazy" />
+    <div class="badge-row">
+      <span class="badge category">{{ item.category }}</span>
+      <span *ngIf="item.discountPercentage > 0" class="badge discount">-{{ item.discountPercentage }}%</span>
+    </div>
     <button
       type="button"
       class="favorite-button"
@@ -15,7 +19,10 @@
     <h3 class="card-title">{{ item.title }}</h3>
     <p class="card-description">{{ item.description | slice:0:100 }}...</p>
     <div class="card-footer">
-      <span class="card-price">${{ item.price }}</span>
+      <div class="price-wrap">
+        <span class="card-price">${{ item.price }}</span>
+        <span class="stock">Stock: {{ item.stock }}</span>
+      </div>
       <span class="card-rating" aria-label="rating">⭐ {{ item.rating }}</span>
     </div>
   </div>

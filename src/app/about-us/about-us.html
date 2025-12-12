@@ -1,56 +1,86 @@
 <div class="aboutus-section">
   <div class="container">
-    <h2 class="aboutus-title">{{ title }}</h2>
-    <p class="aboutus-text">{{ mission }}</p>
-
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img [src]="photoUrl" alt="Team photo" class="team-photo" />
+    <div class="header-section">
+      <h1 class="aboutus-title">{{ title }}</h1>
+      <p class="aboutus-text">{{ mission }}</p>
     </div>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-      <button class="btn" (click)="addLike()">👍 Like</button>
-      <p [class.highlight]="likes >= 5">Likes: {{ likes }}</p>
-
-      <button class="btn" (click)="toggleMessage()">Toggle Message</button>
-      <p *ngIf="showMessage">Thank you for visiting!</p>
+    <div class="team-photo-section">
+      <img [src]="photoUrl" alt="Our team" class="team-photo" />
     </div>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-      <input [(ngModel)]="name" placeholder="Enter your name" class="input-field" />
-      <p *ngIf="name">Hello, {{ name }}!</p>
-    </div>
-
-    <div style="text-align: center; margin-bottom: 20px;">
-      <input [(ngModel)]="email" placeholder="Leave your email" class="input-field" />
-      <button class="btn" [disabled]="isButtonDisabled" (click)="subscribe()">Subscribe</button>
-      <p *ngIf="subscribed">Thanks, {{ email }}, we’ll be in touch!</p>
-    </div>
-
-    <div class="row features">
-      <div class="feature-box">
-        <div class="icon"><i class="fas fa-heart"></i></div>
-        <h4>Work with heart</h4>
-        <p>We put our heart into every project to deliver the best results.</p>
-      </div>
-      <div class="feature-box">
-        <div class="icon"><i class="fas fa-shield-alt"></i></div>
-        <h4>Reliable services</h4>
-        <p>Our services are reliable and focused on client satisfaction.</p>
-      </div>
-      <div class="feature-box">
-        <div class="icon"><i class="fas fa-headset"></i></div>
-        <h4>Great support</h4>
-        <p>We provide 24/7 support to help you with any issues.</p>
+    <div class="team-grid">
+      <div class="team-member" *ngFor="let member of teamMembers">
+        <div class="member-icon">{{ member.icon }}</div>
+        <h3>{{ member.name }}</h3>
+        <p class="member-role">{{ member.role }}</p>
+        <p class="member-bio">{{ member.bio }}</p>
       </div>
     </div>
 
-    <div class="contacts">
-      <h3>Contacts</h3>
-      <ul>
-        <li>Email: example&#64;mail.com</li>
-        <li>Telegram: &#64;username</li>
-        <li>LinkedIn: <a href="#">linkedin.com/in/username</a></li>
-      </ul>
+    <div class="interaction-section">
+      <div class="like-section">
+        <button
+          class="like-btn"
+          [class.liked]="liked"
+          (click)="toggleLike()"
+          title="Like our team"
+          [disabled]="liked"
+          aria-pressed="{{ liked }}"
+        >
+          <span class="like-emoji">👍</span>
+          <span class="like-label">{{ liked ? 'Thanks!' : 'Like us' }}</span>
+        </button>
+
+        <p class="like-thanks" *ngIf="liked">Thank you for your support! ❤️</p>
+      </div>
+
+      <div class="subscribe-section">
+        <h3>Stay Updated</h3>
+        <p>Get notified about new products and team updates</p>
+        <div class="subscribe-form">
+          <input
+            [(ngModel)]="email"
+            class="input-field"
+            placeholder="Enter your email"
+            type="email"
+            [disabled]="subscribed"
+          />
+          <button class="btn primary" (click)="subscribe()" [disabled]="subscribed || !email">
+            {{ subscribed ? '✓ Subscribed' : 'Subscribe' }}
+          </button>
+        </div>
+        <p class="status subscribed" *ngIf="subscribed">
+          Thanks, <strong>{{ email }}</strong>! We'll keep you updated.
+        </p>
+      </div>
+    </div>
+
+    <div class="contacts-section">
+      <h3>Get in Touch</h3>
+      <div class="contacts-grid">
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <div>
+            <strong>Email</strong>
+            <p>team@onlinestore.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">💬</span>
+          <div>
+            <strong>Telegram</strong>
+            <p>@onlinestore_support</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">💼</span>
+          <div>
+            <strong>LinkedIn</strong>
+            <p>linkedin.com/company/onlinestore</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

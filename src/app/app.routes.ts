@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile';
 import { FavoritesComponent } from './favorites/favorites';
 import { authGuard } from './guards/auth.guard';
 import {AppComponent} from './app';
+import { OfflinePageComponent } from './offline-page/offline-page';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'offline', component: OfflinePageComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

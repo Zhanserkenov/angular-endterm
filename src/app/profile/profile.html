@@ -1,42 +1,95 @@
 <div class="profile-container">
-  <div class="profile-content">
-    <h1>Profile</h1>
-    <div *ngIf="currentUser$ | async as user; else loading" class="user-info">
+  <div class="profile-header">
+    <h1>My Profile</h1>
+    <p class="profile-subtitle">Manage your account settings and preferences</p>
+  </div>
+
+  <div class="profile-content" *ngIf="currentUser$ | async as user; else loading">
+    <div class="profile-main">
       <div class="avatar-section">
-        <div class="avatar-preview" *ngIf="profile.photoData; else noAvatar">
-          <img [src]="profile.photoData" alt="Profile photo" />
+        <div class="avatar-wrapper">
+          <div class="avatar-preview" *ngIf="profile.photoData; else noAvatar">
+            <img [src]="profile.photoData" alt="Profile photo" />
+            <div class="avatar-overlay">
+              <span class="upload-icon">📷</span>
+            </div>
+          </div>
+          <ng-template #noAvatar>
+            <div class="avatar-placeholder">
+              <span class="avatar-icon">👤</span>
+            </div>
+          </ng-template>
         </div>
-        <ng-template #noAvatar>
-          <div class="avatar-placeholder">No photo</div>
-        </ng-template>
         <label class="upload-btn">
           <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
-          <span *ngIf="!uploading">Upload photo</span>
+          <span class="upload-icon-btn">📤</span>
+          <span *ngIf="!uploading">Upload Photo</span>
           <span *ngIf="uploading">Uploading...</span>
         </label>
         <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
       </div>
 
-      <div class="info-item">
-        <label>Email:</label>
-        <span>{{ user.email }}</span>
+      <div class="profile-info">
+        <div class="info-card">
+          <div class="info-icon">📧</div>
+          <div class="info-content">
+            <label>Email Address</label>
+            <span class="info-value">{{ user.email }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🆔</div>
+          <div class="info-content">
+            <label>User ID</label>
+            <span class="info-value uid">{{ user.uid }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">✅</div>
+          <div class="info-content">
+            <label>Email Verification</label>
+            <span class="info-value verified" [class.verified-yes]="user.emailVerified" [class.verified-no]="!user.emailVerified">
+              {{ user.emailVerified ? '✓ Verified' : '✗ Not Verified' }}
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="info-item">
-        <label>User ID:</label>
-        <span>{{ user.uid }}</span>
-      </div>
-      <div class="info-item">
-        <label>Email Verified:</label>
-        <span>{{ user.emailVerified ? 'Yes' : 'No' }}</span>
-      </div>
-      <button (click)="logout()" class="btn-logout">Logout</button>
     </div>
-    <ng-template #loading>
-      <div class="loading">
-        <p>Loading user information...</p>
+
+    <div class="push-notifications-section">
+      <h3>Push Notifications</h3>
+      <p class="push-description">Get notified about new products and special offers</p>
+      <div class="push-controls">
+        <button 
+          *ngIf="!(isPushSubscribed$ | async)"
+          (click)="subscribeToPush()" 
+          class="btn-push"
+          [disabled]="!isPushSupported || pushSubscribing"
+        >
+          <span class="push-icon">🔔</span>
+          <span>{{ pushSubscribing ? 'Subscribing...' : 'Enable Notifications' }}</span>
+        </button>
+        <p class="push-status" *ngIf="pushError">{{ pushError }}</p>
+        <p class="push-status success" *ngIf="pushSuccess">{{ pushSuccess }}</p>
       </div>
-    </ng-template>
+    </div>
+
+    <div class="profile-actions">
+      <button (click)="logout()" class="btn-logout">
+        <span class="logout-icon">🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
   </div>
+
+  <ng-template #loading>
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading your profile...</p>
+    </div>
+  </ng-template>
 </div>
 
 

@@ -5,22 +5,22 @@ import { ConnectivityService } from '../services/connectivity.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-offline-banner',
+  selector: 'app-offline-page',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './offline-banner.html',
-  styleUrls: ['./offline-banner.css']
+  templateUrl: './offline-page.html',
+  styleUrls: ['./offline-page.css']
 })
-export class OfflineBannerComponent {
+export class OfflinePageComponent {
   online$: Observable<boolean>;
 
   constructor(connectivityService: ConnectivityService) {
     this.online$ = connectivityService.online$;
   }
+
+  retry(): void {
+    location.reload();
+  }
 }
-
-
-
-
 
 

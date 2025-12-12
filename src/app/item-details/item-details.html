@@ -12,8 +12,10 @@
     <button (click)="goBack()" class="back-button">Go Back</button>
   </div>
 
-  <div *ngIf="(item$ | async) as item" class="item-details">
-    <button (click)="goBack()" class="back-button">← Back</button>
+  <div *ngIf="(item$ | async) as item" class="item-details glass">
+    <div class="details-header">
+      <button (click)="goBack()" class="back-button">← Back</button>
+    </div>
 
     <div class="details-image-section">
       <img [src]="item.thumbnail" [alt]="item.title" class="main-image" />
@@ -24,15 +26,16 @@
     </div>
 
     <div class="details-content">
-      <h1 class="details-title">{{ item.title }}</h1>
-      <div class="details-meta">
-        <span class="brand">Brand: {{ item.brand }}</span>
-        <span class="category">Category: {{ item.category }}</span>
+      <div class="pill-row">
+        <span class="pill category">{{ item.category }}</span>
+        <span class="pill brand">{{ item.brand }}</span>
+        <span class="pill stock" [class.low]="item.stock < 10">In stock: {{ item.stock }}</span>
       </div>
+
+      <h1 class="details-title">{{ item.title }}</h1>
 
       <div class="details-rating">
         <span class="rating-value">⭐ {{ item.rating }}</span>
-        <span class="stock">Stock: {{ item.stock }}</span>
       </div>
 
       <div class="details-price">
@@ -46,12 +49,11 @@
       </div>
 
       <div class="details-info">
-        <div class="info-item"><strong>Product ID:</strong> {{ item.id }}</div>
-        <div class="info-item"><strong>Available Stock:</strong> {{ item.stock }} units</div>
-        <div class="info-item"><strong>Brand:</strong> {{ item.brand }}</div>
         <div class="info-item"><strong>Category:</strong> {{ item.category }}</div>
+        <div class="info-item"><strong>Brand:</strong> {{ item.brand }}</div>
         <div class="info-item"><strong>Rating:</strong> {{ item.rating }}/5</div>
         <div class="info-item"><strong>Price:</strong> ${{ item.price }}</div>
+        <div class="info-item"><strong>Stock:</strong> {{ item.stock }} units</div>
         <div *ngIf="item.discountPercentage > 0" class="info-item">
           <strong>Discount:</strong> {{ item.discountPercentage }}%
         </div>
